@@ -1,2 +1,7 @@
 DATABASE_URI="postgresql+psycopg2://trello_dev:123456@localhost:5432/trello_db"
 JWT_SECRET_KEY="secret"
+
+
+FLASK_APP=main
+FLASK_DEBUG=1
+FLASK_RUN_PORT=8080
