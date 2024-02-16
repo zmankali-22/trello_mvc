@@ -55,4 +55,4 @@ def auth_login():
     # else
     else:
         # return error message
-        # return {"error": "Invalid email or password"}, 401
+        return {"error": "Invalid email or password"}, 401
