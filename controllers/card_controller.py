@@ -1,7 +1,5 @@
 from flask import Blueprint, request
 from datetime import date
-from psycopg2 import errorcodes
-from sqlalchemy.exc import IntegrityError
 
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
