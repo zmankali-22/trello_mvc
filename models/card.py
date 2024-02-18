@@ -1,5 +1,4 @@
 from init import db, ma 
-
 from marshmallow import fields
 
 class Card(db.Model):
@@ -16,9 +15,6 @@ class Card(db.Model):
 
     user = db.relationship('User', back_populates='cards')
 
-
-
-
 class CardSchema(ma.Schema):
     user = fields.Nested('UserSchema', only = ['name', 'email'])
     class Meta:
@@ -28,3 +24,6 @@ class CardSchema(ma.Schema):
 
 card_schema = CardSchema()
 cards_schema = CardSchema(many=True)
+
+
+
