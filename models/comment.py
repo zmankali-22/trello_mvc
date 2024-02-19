@@ -3,7 +3,7 @@
 from init import db, ma
 from marshmallow import fields
 
-class Comment(db.MOdel):
+class Comment(db.Model):
 
     __tablename__ = 'comments'
 
