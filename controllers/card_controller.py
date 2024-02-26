@@ -29,9 +29,9 @@ def get_one_card(card_id):
 @cards_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_card():
-
+    
     # data we get from  the body of the request
-    body_data = request.get_json()
+    body_data = card_schema.load(request.get_json())
 #  create the cardinstance
     card = Card(
         title=body_data.get('title'),
@@ -64,7 +64,7 @@ def delete_card(card_id):
 def update_card(card_id):
 
     # data we get from  the body of the request
-    body_data = request.get_json()
+    body_data = card_schema.load(request.get_json(), partial=True)
     stmt = db.select(Card).filter_by(id=card_id)
     card = db.session.scalar(stmt)
     if card :
