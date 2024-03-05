@@ -40,7 +40,7 @@ def delete_comment(card_id, comment_id):
             db.session.commit()
             return {"message": f"Comment with {comment_id}'{comment.message}' deleted successfully"}
         else:
-            return {'error': f"Comment  with id {comment_id} not found in card with id {card_id}"}, 404
+            # return {'error': f"Comment  with id {comment_id} not found in card with id {card_id}"}, 404
 
 
 @comments_bp.route('/<int:comment_id>', methods=['PUT', 'PATCH'])
