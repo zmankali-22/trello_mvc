@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from datetime import date
+import functools
 
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
@@ -10,6 +11,18 @@ from models.user import User
 
 cards_bp = Blueprint('cards', __name__, url_prefix='/cards')
 cards_bp.register_blueprint(comments_bp)
+
+def authorize_as_admin(fn):
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        user_id = get_jwt_identity()
+        stmt = db.select(User).filter_by(id=user_id)
+        user = db.session.scalar(stmt)
+        if user.is_admin:
+            return fn(*args, **kwargs)
+        else:
+            return {'error': 'You are not authorized to perform this action'}, 403
+    return wrapper
 
 @cards_bp.route('/')
 def get_all_cards():
@@ -51,10 +64,11 @@ def create_card():
 
 @cards_bp.route('/<int:card_id>/', methods=['DELETE'])
 @jwt_required()
+@authorize_as_admin
 def delete_card(card_id):
-    is_admin = is_user_admin()
-    if not is_admin:
-        return {'error': 'You are not authorized to delete'}, 403
+    # is_admin = is_user_admin()
+    # if not is_admin:
+    #     return {'error': 'You are not authorized to delete'}, 403
     stmt = db.select(Card).filter_by(id=card_id)
     card = db.session.scalar(stmt)
     if card :
@@ -87,9 +101,9 @@ def update_card(card_id):
         return {'error': f"Card {card_id} not found"}, 404
 
 
-def is_user_admin():
-    user_id = get_jwt_identity()
-    stmt = db.select(User).filter_by(id=user_id)
-    user = db.session.scalar(stmt)
-    return user.is_admin
+# def is_user_admin():
+#     user_id = get_jwt_identity()
+#     stmt = db.select(User).filter_by(id=user_id)
+#     user = db.session.scalar(stmt)
+#     return user.is_admin
  
