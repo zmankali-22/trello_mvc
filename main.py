@@ -18,6 +18,14 @@ def create_app():
     bcrypt.init_app(app)
     jwt.init_app(app)
 
+    @app.errorhandler(400)
+    def bad_request(error):
+        return {'error': str(error)}, 400
+    
+    @app.errorhandler(404)
+    def not_found(error):
+        return {'error': str(error)}, 404
+
     @app.errorhandler(ValidationError)
     def validation_error(error):
         return {'error': error.messages}, 400
